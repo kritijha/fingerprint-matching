@@ -3,53 +3,58 @@ import java.awt.Toolkit;
 import java.awt.image.PixelGrabber;
 import java.io.File;
 
-class fingerprint{
-public static void main(String args[]){
+class fingerprint
+{
+	public static void main(String args[])
+	{
+		try 
+		{
 
+			String file1 = "/home/kj/Pictures/f1.jpg";
+			String file2 = "/home/kj/Pictures/f2.jpg";
 
-try {
+			Image pic1= Toolkit.getDefaultToolkit().getImage(file1);
+			Image pic2= Toolkit.getDefaultToolkit().getImage(file2);
 
-String file1 = "/home/kj/Pictures/f1.jpg";
-String file2 = "/home/kj/Pictures/f2.jpg";
+			try 
+			{
 
-Image pic1= Toolkit.getDefaultToolkit().getImage(file1);
-Image pic2= Toolkit.getDefaultToolkit().getImage(file2);
+				PixelGrabber grab11 = new PixelGrabber(pic1, 0, 0, -1, -1,false);
+				PixelGrabber grab21 = new PixelGrabber(pic2, 0, 0, -1, -1,false);
 
-try {
+				int array1[]= null;
 
-PixelGrabber grab11 = new PixelGrabber(pic1, 0, 0, -1, -1,
-false);
-PixelGrabber grab21 = new PixelGrabber(pic2, 0, 0, -1, -1,
-false);
+				if (grab11.grabPixels()) 
+				{
+					int width = grab11.getWidth();
+					int height = grab11.getHeight();
+					array1= new int[width * height];
+					array1= (int[]) grab11.getPixels();
+				}
 
-int array1[]= null;
+				int[] array2 = null;
 
-if (grab11.grabPixels()) {
-int width = grab11.getWidth();
-int height = grab11.getHeight();
-array1= new int[width * height];
-array1= (int[]) grab11.getPixels();
-}
+				if (grab21.grabPixels()) 
+				{
+					int width = grab21.getWidth();
+					int height = grab21.getHeight();
+					array2 = new int[width * height];
+					array2 = (int[]) grab21.getPixels();
+				}
 
-int[] array2 = null;
+				System.out.println("Fingerprints match: "+ java.util.Arrays.equals(array1, array2 ));
 
-if (grab21.grabPixels()) {
-int width = grab21.getWidth();
-int height = grab21.getHeight();
-array2 = new int[width * height];
-array2 = (int[]) grab21.getPixels();
-}
+			} 
+			catch (InterruptedException e1) 
+			{
+				e1.printStackTrace();
+			}
 
-System.out.println("Fingerprints match: "
-+ java.util.Arrays.equals(array1, array2 ));
-
-} catch (InterruptedException e1) {
-e1.printStackTrace();
-}
-
-} catch (Throwable t) {
-// report error
-System.out.println("Fail - " + t.getMessage());
-}
-}
+		} 
+		catch (Throwable t) 
+		{
+			// report error
+			System.out.println("Fail - " + t.getMessage());
+		}
+	}
 }
